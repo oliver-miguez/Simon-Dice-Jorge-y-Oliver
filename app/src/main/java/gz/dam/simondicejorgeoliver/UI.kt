@@ -33,6 +33,7 @@ fun Menu(){
         Column (modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Puntuacion(1)
             Botonera()
+            Boton_inicio()
         }
 
     }
@@ -75,6 +76,18 @@ fun Boton(enum_color: Colores){
         Text(text = enum_color.txt,
             fontSize = 15.sp,
             color = Color.Black)
+    }
+}
+
+@Composable
+fun Boton_inicio(){
+    Button(
+        onClick = {
+            Log.d("Juego","Empieza el juego")
+        }) {
+        Text(
+            text = "Start"
+        )
     }
 }
 
