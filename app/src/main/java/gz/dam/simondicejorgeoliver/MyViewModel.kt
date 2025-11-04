@@ -1,9 +1,10 @@
 package gz.dam.simondicejorgeoliver
 
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class ViewModel(){
+class MyViewModel(): ViewModel(){
     val estadoActual: MutableStateFlow<Estados> = MutableStateFlow(Estados.INICIO)
     var numeroRandomGenerado = MutableStateFlow(0)
 

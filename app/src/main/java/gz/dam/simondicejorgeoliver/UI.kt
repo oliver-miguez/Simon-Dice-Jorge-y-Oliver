@@ -12,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,18 +22,18 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun UI(){
-    Menu()
+fun UI(viewModel: MyViewModel){
+    Menu(viewModel)
 }
 
 
 @Composable
-fun Menu(){
+fun Menu(viewModel: MyViewModel) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
         Column (modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Puntuacion(1)
-            Botonera()
-            Boton_inicio()
+            Botonera(viewModel)
+            Boton_inicio(viewModel)
         }
 
     }
@@ -49,25 +50,28 @@ fun Puntuacion(puntuacion: Int){
 
 
 @Composable
-fun Botonera(){
+fun Botonera(viewModel: MyViewModel) {
     Column (modifier = Modifier.padding(16.dp)) {
         Row {
-            Boton(Colores.CLASE_ROJO)
-            Boton(Colores.CLASE_AMARILLO)
+            Boton(Colores.CLASE_ROJO,viewModel)
+            Boton(Colores.CLASE_AMARILLO,viewModel)
         }
         Row {
-            Boton(Colores.CLASE_AZUL)
-            Boton(Colores.CLASE_VERDE)
+            Boton(Colores.CLASE_AZUL,viewModel)
+            Boton(Colores.CLASE_VERDE,viewModel)
         }
     }
 }
 
 @Composable
-fun Boton(enum_color: Colores){
+fun Boton(enum_color: Colores, viewModel: MyViewModel){
+    val activo = viewModel.estadoActual.collectAsState().value
     Button(
+        enabled = activo.boton_activo,
         colors = ButtonDefaults.buttonColors(enum_color.color),
         onClick = {
             Log.d("Juego","Click!"+ enum_color.txt+" numero: "+enum_color.ordinal)
+            viewModel.correcionOpcionElegida(enum_color.ordinal)
         },
         shape = RoundedCornerShape(0.dp),
         modifier = Modifier.size(150.dp).padding(15.dp)
@@ -79,10 +83,13 @@ fun Boton(enum_color: Colores){
 }
 
 @Composable
-fun Boton_inicio(){
+fun Boton_inicio(viewModel: MyViewModel) {
+    val activo = viewModel.estadoActual.collectAsState().value
     Button(
+        enabled = activo.start_activo,
         onClick = {
             Log.d("Juego","Empieza el juego")
+            viewModel.numeroRandom()
         }) {
         Text(
             text = "Start"
@@ -94,5 +101,5 @@ fun Boton_inicio(){
 @Preview(showBackground = true)
 @Composable
 fun UIPreview() {
-    UI()
+    UI(viewModel = MyViewModel())
 }
