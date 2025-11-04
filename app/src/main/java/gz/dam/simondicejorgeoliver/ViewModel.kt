@@ -22,4 +22,18 @@ class ViewModel(){
         Log.d("ViewModel","Estado Adivinando")
 
     }
+
+    fun correcionOpcionElegida(numeroColor:Int): Boolean{
+        Log.d("ViewModel","Combrobando si la opción escogida es correcta...")
+        return if (numeroColor == Datos.numero){
+            Log.d("ViewModel","ES CORRECTO !")
+            numeroRandom()
+            true
+        }else{
+            Log.d("ERROR, HAS PERDIDO")
+            false
+        }
+    }
+
+
 }
