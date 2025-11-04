@@ -8,6 +8,8 @@ class MyViewModel(): ViewModel(){
     val estadoActual: MutableStateFlow<Estados> = MutableStateFlow(Estados.INICIO)
     var numeroRandomGenerado = MutableStateFlow(0)
 
+    val puntuacion = MutableStateFlow<Int?>(0)
+
     fun numeroRandom(){
         estadoActual.value = Estados.GENERANDO
         Log.d("ViewModel","Estado Generando")
@@ -29,6 +31,7 @@ class MyViewModel(): ViewModel(){
         return if (numeroColor == Datos.numero){
             Log.d("ViewModel","ES CORRECTO !")
             numeroRandom()
+            puntuacion.value = puntuacion.value?.plus(1)
             true
         }else{
             Log.d("ViewModel","ERROR, HAS PERDIDO")
@@ -38,6 +41,7 @@ class MyViewModel(): ViewModel(){
     }
 
     fun derrota(){
+        puntuacion.value = 0
         estadoActual.value = Estados.INICIO
     }
 }
