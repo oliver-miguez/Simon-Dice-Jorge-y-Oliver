@@ -13,6 +13,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,9 +30,11 @@ fun UI(viewModel: MyViewModel){
 
 @Composable
 fun Menu(viewModel: MyViewModel) {
+    val puntuacionRecogida by viewModel.puntuacion.collectAsState()
+
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
         Column (modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Puntuacion(1)
+            Puntuacion(puntuacionRecogida)
             Botonera(viewModel)
             Boton_inicio(viewModel)
         }
@@ -41,7 +44,7 @@ fun Menu(viewModel: MyViewModel) {
 }
 
 @Composable
-fun Puntuacion(puntuacion: Int){
+fun Puntuacion(puntuacion: Int?){
     Text(
         text = "Puntuación: $puntuacion",
         modifier = Modifier.padding(top = 100.dp)
