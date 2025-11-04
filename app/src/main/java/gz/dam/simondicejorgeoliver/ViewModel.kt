@@ -1,2 +1,0 @@
-package gz.dam.simondicejorgeoliver
-
