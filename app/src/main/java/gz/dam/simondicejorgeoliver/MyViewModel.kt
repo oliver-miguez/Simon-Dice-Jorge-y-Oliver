@@ -10,6 +10,8 @@ class MyViewModel(): ViewModel(){
 
     val puntuacion = MutableStateFlow<Int?>(0)
 
+    var posicion = 0
+
     fun numeroRandom(){
         estadoActual.value = Estados.GENERANDO
         Log.d("ViewModel","Estado Generando")
@@ -20,17 +22,20 @@ class MyViewModel(): ViewModel(){
 
     fun actualizarNumero(numero:Int){
         Log.d("ViewModel","Actualizando el numero de la clase Datos")
-        Datos.numero = numero
+        Datos.numero.add(numero)
         estadoActual.value = Estados.ADIVINANDO
-        Log.d("ViewModel","Estado Adivinando")
+        Log.d("ViewModel","Estado Adivinando, secuencia: ${Datos.numero}")
 
     }
 
     fun correcionOpcionElegida(numeroColor:Int): Boolean{
         Log.d("ViewModel","Combrobando si la opción escogida es correcta...")
-        return if (numeroColor == Datos.numero){
+        return if (numeroColor == Datos.numero[posicion]){
             Log.d("ViewModel","ES CORRECTO !")
-            numeroRandom()
+            posicion++
+            if (Datos.numero.size == posicion) {
+                cambiarRonda()
+            }
             puntuacion.value = puntuacion.value?.plus(1)
             true
         }else{
@@ -40,8 +45,14 @@ class MyViewModel(): ViewModel(){
         }
     }
 
+    fun cambiarRonda(){
+        posicion=0
+        numeroRandom()
+    }
+
     fun derrota(){
         puntuacion.value = 0
         estadoActual.value = Estados.INICIO
+        Datos.numero = ArrayList<Int>()
     }
 }
