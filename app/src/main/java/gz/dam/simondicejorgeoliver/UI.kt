@@ -12,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -79,9 +81,16 @@ fun Botonera(viewModel: MyViewModel) {
 @Composable
 fun Boton(enum_color: Colores, viewModel: MyViewModel){
     val activo = viewModel.estadoActual.collectAsState().value
+    val estado  by viewModel.estadoActual.collectAsState()
+    var color = enum_color.color
+    LaunchedEffect(estado) {
+        color = Color.Black
+        delay(5000)
+        color = enum_color.color
+    }
     Button(
         enabled = activo.boton_activo,
-        colors = ButtonDefaults.buttonColors(enum_color.color),
+        colors = ButtonDefaults.buttonColors(color),
         onClick = {
             Log.d("Juego","Click!"+ enum_color.txt+" numero: "+enum_color.ordinal)
             viewModel.correcionOpcionElegida(enum_color.ordinal)
