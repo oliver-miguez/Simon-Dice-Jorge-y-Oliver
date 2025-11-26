@@ -12,7 +12,14 @@ completamente desarrollado en ***Kotlin*** y ***JetPack Compose*** de Android St
 
 ### Funcionamiento
 
-
+![1.jpeg](imgs/1.jpeg)
+Cuando inicias la aplicación
+![2.jpeg](imgs/2.jpeg)
+Cuando juegas la aplicación
+![3.jpeg](imgs/3.jpeg)
+Cuando pierdes en la aplicación
+![4.jpeg](imgs/4.jpeg)
+Cuando vuelves a jugar en la aplicación
 
 ### Diagrama de estados:
 
