@@ -85,28 +85,25 @@ fun Botonera(viewModel: MyViewModel) {
 fun Boton(enum_color: Colores, viewModel: MyViewModel){
     val activo = viewModel.estadoActual.collectAsState().value
     var _activo by remember { mutableStateOf( activo.boton_activo)}
-    val estado  by viewModel.estadoActual.collectAsState()
+    val estado  by viewModel.botonPresionado.collectAsState()
     var _color by remember { mutableStateOf(enum_color.color)}
     LaunchedEffect(estado) {
         Log.d("Debug","Cambie de estado ${enum_color.txt}")
-        if (!_activo){
-            _activo = true
-        }
-        for (i in 1..5) {
+        if (estado==enum_color.ordinal) {
+
             _color = enum_color.color.copy(alpha = 0.41f)
-            delay(200)
+            delay(400)
             _color = enum_color.color
-            delay(200)
+
+            viewModel.continuarSecuencia()
         }
 
 
-
-        _activo = activo.boton_activo
 
         Log.d("Debug","Cambie de estado ${enum_color.txt}")
     }
     Button(
-        enabled = _activo,
+        enabled = activo.boton_activo,
         colors = ButtonDefaults.buttonColors(_color),
         onClick = {
             Log.d("Juego","Click!"+ enum_color.txt+" numero: "+enum_color.ordinal)
