@@ -1,5 +1,8 @@
 package gz.dam.simondicejorgeoliver
 
+import android.media.AudioFormat
+import android.media.AudioManager
+import android.media.AudioTrack
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.math.PI
+import kotlin.math.sin
 
 
 @Composable
@@ -39,6 +46,8 @@ fun Menu(viewModel: MyViewModel) {
     val rondaRecogida by viewModel.ronda.collectAsState()
     val recordRecogida by viewModel.record.collectAsState()
     val estado  by viewModel.estadoActual.collectAsState()
+
+    if (estado == Estados.INICIO) reproducirTono(549.25,500)
 
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
@@ -87,12 +96,14 @@ fun Boton(enum_color: Colores, viewModel: MyViewModel){
     var _activo by remember { mutableStateOf( activo.boton_activo)}
     val estado  by viewModel.botonPresionado.collectAsState()
     var _color by remember { mutableStateOf(enum_color.color)}
+    val scope = rememberCoroutineScope()
     LaunchedEffect(estado) {
         Log.d("Debug","Cambie de estado ${enum_color.txt}")
         if (estado==enum_color.ordinal) {
 
             _color = enum_color.color.copy(alpha = 0.41f)
             delay(400)
+            reproducirTono(enum_color.nota,200)
             _color = enum_color.color
 
             viewModel.continuarSecuencia()
@@ -106,6 +117,9 @@ fun Boton(enum_color: Colores, viewModel: MyViewModel){
         enabled = activo.boton_activo,
         colors = ButtonDefaults.buttonColors(_color),
         onClick = {
+            scope.launch {
+                reproducirTono(enum_color.nota,150)
+            }
             Log.d("Juego","Click!"+ enum_color.txt+" numero: "+enum_color.ordinal)
             viewModel.correcionOpcionElegida(enum_color.ordinal)
         },
@@ -133,6 +147,34 @@ fun Boton_inicio(viewModel: MyViewModel) {
     }
 }
 
+
+fun reproducirTono(frecuencia: Double, duracionMs: Int) {
+    val sampleRate = 44100
+    val numSamples = (duracionMs / 1000.0 * sampleRate).toInt()
+    val buffer = ShortArray(numSamples)
+
+    // Generar la onda senoidal
+    for (i in buffer.indices) {
+        val angle = 2.0 * PI * i * frecuencia / sampleRate
+        buffer[i] = (sin(angle) * Short.MAX_VALUE).toInt().toShort()
+    }
+
+    // Crear un AudioTrack para reproducir el tono
+    val audioTrack = AudioTrack(
+        AudioManager.STREAM_MUSIC,
+        sampleRate,
+        AudioFormat.CHANNEL_OUT_MONO,
+        AudioFormat.ENCODING_PCM_16BIT,
+        buffer.size * 2,
+        AudioTrack.MODE_STATIC
+    )
+
+    audioTrack.write(buffer, 0, buffer.size)
+    audioTrack.play()
+    // Detener luego de la duración
+    Thread.sleep(duracionMs.toLong())
+    audioTrack.release()
+}
 
 @Preview(showBackground = true)
 @Composable

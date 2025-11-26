@@ -8,12 +8,12 @@ object Datos {
 
 }
 
-enum class Colores(val color: Color, val txt: String) {
-    CLASE_ROJO(color = Color.Red, txt = "roxo"),
-    CLASE_VERDE(color = Color.Green, txt = "verde"),
-    CLASE_AZUL(color = Color.Blue, txt = "azul"),
-    CLASE_AMARILLO(color = Color.Yellow, txt = "melo"),
-    CLASE_START(color = Color.LightGray, txt = "Start")
+enum class Colores(val color: Color, val txt: String, val nota: Double) {
+    CLASE_ROJO(color = Color.Red, txt = "roxo",261.63),
+    CLASE_VERDE(color = Color.Green, txt = "verde",293.66),
+    CLASE_AZUL(color = Color.Blue, txt = "azul",329.63),
+    CLASE_AMARILLO(color = Color.Yellow, txt = "melo",349.23),
+    CLASE_START(color = Color.LightGray, txt = "Start",349.23)
 }
 
 enum class Estados(val start_activo: Boolean, val boton_activo: Boolean) {
