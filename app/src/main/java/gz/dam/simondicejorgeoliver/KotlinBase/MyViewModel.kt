@@ -1,14 +1,14 @@
-package gz.dam.simondicejorgeoliver
+package gz.dam.simondicejorgeoliver.KotlinBase
 
 import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import gz.dam.simondicejorgeoliver.Utility.KotlinRecord.Controlador.ControladorKotlin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class MyViewModel(): ViewModel(){
+object MyViewModel: ViewModel(){
     val estadoActual: MutableStateFlow<Estados> = MutableStateFlow(Estados.INICIO)
     var numeroRandomGenerado = MutableStateFlow(0)
 
@@ -79,9 +79,13 @@ class MyViewModel(): ViewModel(){
     }
 
     fun derrota(){
+        record.value = ControladorKotlin.obtenerRecord().valorRecord
+
         if (record.value < puntuacion.value){
             record.value = puntuacion.value
+            ControladorKotlin.actualizarRecord(record.value)
         }
+
         puntuacion.value = 0
         posicion=0
         ronda.value = 1

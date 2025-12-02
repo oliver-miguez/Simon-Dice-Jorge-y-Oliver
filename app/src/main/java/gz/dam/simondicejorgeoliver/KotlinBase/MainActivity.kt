@@ -1,4 +1,4 @@
-package gz.dam.simondicejorgeoliver
+package gz.dam.simondicejorgeoliver.KotlinBase
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,10 +13,9 @@ import gz.dam.simondicejorgeoliver.ui.theme.SimonDiceJorgeOliverTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val myViewModel: MyViewModel = MyViewModel()
         enableEdgeToEdge()
         setContent {
-            UI(myViewModel)
+            UI(MyViewModel)
         }
     }
 }
