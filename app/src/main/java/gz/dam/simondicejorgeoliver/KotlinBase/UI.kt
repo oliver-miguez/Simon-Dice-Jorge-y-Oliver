@@ -1,4 +1,4 @@
-package gz.dam.simondicejorgeoliver
+package gz.dam.simondicejorgeoliver.KotlinBase
 
 import android.media.AudioFormat
 import android.media.AudioManager
@@ -179,5 +179,5 @@ fun reproducirTono(frecuencia: Double, duracionMs: Int) {
 @Preview(showBackground = true)
 @Composable
 fun UIPreview() {
-    UI(viewModel = MyViewModel())
+    UI(viewModel = MyViewModel)
 }
