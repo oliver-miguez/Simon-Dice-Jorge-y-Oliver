@@ -1,14 +1,18 @@
-package gz.dam.simondicejorgeoliver.Utility.KotlinRecord.Controlador
+package gz.dam.simondicejorgeoliver.Utility.SharedPreference.Controlador
 
+import androidx.datastore.preferences.core.intPreferencesKey
 import gz.dam.simondicejorgeoliver.Interfaz.InterfazRecord
 import gz.dam.simondicejorgeoliver.Utility.KotlinRecord.Instancia.Record
 
 /**
- * Administra el funcionamiento y el tratamiento del valor del record
+ * Persistencia de datos hasta cuando se cierra la aplicación
  */
-object ControladorKotlin : InterfazRecord {
+class SharedPreference : InterfazRecord{
+
+    val ALMACEN_DATOS = intPreferencesKey("almacen_datos")
+
     override fun obtenerRecord(): Record {
-        return Record
+        TODO("Not yet implemented")
     }
 
     override fun borrarRecord(): Int {
@@ -18,5 +22,4 @@ object ControladorKotlin : InterfazRecord {
     override fun actualizarRecord(valorRecord: Int): Int {
         TODO("Not yet implemented")
     }
-
 }

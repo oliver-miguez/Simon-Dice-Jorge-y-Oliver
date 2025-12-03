@@ -1,4 +1,4 @@
-package gz.dam.simondicejorgeoliver.Utility.KotlinRecord.Interfaz
+package gz.dam.simondicejorgeoliver.Interfaz
 
 import gz.dam.simondicejorgeoliver.Utility.KotlinRecord.Instancia.Record
 
