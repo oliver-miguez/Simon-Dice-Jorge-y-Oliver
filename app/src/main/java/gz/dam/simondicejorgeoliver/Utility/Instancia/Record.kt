@@ -1,4 +1,4 @@
-package gz.dam.simondicejorgeoliver.Utility.KotlinRecord.Instancia
+package gz.dam.simondicejorgeoliver.Utility.Instancia
 
 import java.util.Date
 

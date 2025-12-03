@@ -3,13 +3,12 @@ package gz.dam.simondicejorgeoliver.KotlinBase
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import gz.dam.simondicejorgeoliver.Utility.KotlinRecord.Controlador.ControladorKotlin
 import gz.dam.simondicejorgeoliver.Utility.SharedPreference.Controlador.ControladorPreference
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class MyViewModel(application: Application): AndroidViewModel(application){
     val estadoActual: MutableStateFlow<Estados> = MutableStateFlow(Estados.INICIO)
@@ -25,10 +24,11 @@ class MyViewModel(application: Application): AndroidViewModel(application){
 
     var posicion = 0
 
+    var data = Date()
 
-    init {
-        record.value = obtenerRecord() // Muestra el valor del record constantemente actualizado en la app
-    }
+//    init {
+//        record.value = obtenerRecord() // Muestra el valor del record constantemente actualizado en la app
+//    }
 
     fun numeroRandom(){
         estadoActual.value = Estados.GENERANDO
@@ -89,8 +89,9 @@ class MyViewModel(application: Application): AndroidViewModel(application){
     fun derrota(){
 
         if (puntuacion.value > obtenerRecord()){
-            ControladorPreference.actualizarRecord(getApplication(),puntuacion.value)
+            ControladorPreference.actualizarRecord(getApplication(),puntuacion.value,data)
             record.value = puntuacion.value
+            Log.d("Data", ControladorPreference.obtenerRecord(getApplication()).toString())
         }
 
         puntuacion.value = 0
@@ -102,7 +103,7 @@ class MyViewModel(application: Application): AndroidViewModel(application){
     }
 
     fun obtenerRecord():Int{
-        record.value = ControladorPreference.obtenerRecrod(getApplication())
+        record.value = ControladorPreference.obtenerRecord(getApplication()).valorRecord
         return record.value
     }
 

@@ -1,6 +1,8 @@
 package gz.dam.simondicejorgeoliver.Interfaz
 
-import gz.dam.simondicejorgeoliver.Utility.KotlinRecord.Instancia.Record
+import android.content.Context
+import gz.dam.simondicejorgeoliver.Utility.Instancia.Record
+import java.util.Date
 
 /**
  * Interfaz que recoge las funcionalidades que podremos utilizar con el Record obtenido en el juego
@@ -8,11 +10,9 @@ import gz.dam.simondicejorgeoliver.Utility.KotlinRecord.Instancia.Record
 interface InterfazRecord{
 
     // Permite recoger el record actual
-    fun obtenerRecord(): Record
-
-    //Restablece el record a 0
-    fun borrarRecord(): Int
+    fun obtenerRecord(context: Context): Record
+    
 
     // Actualiza el record
-    fun actualizarRecord(valorRecord: Int): Int
+    fun actualizarRecord(context: Context,valorRecord: Int,valorData: Date): Int
 }
