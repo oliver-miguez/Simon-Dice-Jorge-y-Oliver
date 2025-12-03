@@ -7,5 +7,5 @@ import java.util.Date
  */
 object Record {
     var valorRecord:Int = 0
-    lateinit var fechaSuperacion: Date
+    var fechaSuperacion: Date = Date()
 }

@@ -26,9 +26,10 @@ class MyViewModel(application: Application): AndroidViewModel(application){
 
     var data = Date()
 
-//    init {
-//        record.value = obtenerRecord() // Muestra el valor del record constantemente actualizado en la app
-//    }
+    init {
+        //ControladorPreference.actualizarRecord(getApplication(),2,Date() )
+        record.value = obtenerRecord() // Muestra el valor del record constantemente actualizado en la app
+    }
 
     fun numeroRandom(){
         estadoActual.value = Estados.GENERANDO
@@ -87,11 +88,11 @@ class MyViewModel(application: Application): AndroidViewModel(application){
     }
 
     fun derrota(){
-
         if (puntuacion.value > obtenerRecord()){
+            Log.d("DataMia", "Hola $data")
             ControladorPreference.actualizarRecord(getApplication(),puntuacion.value,data)
             record.value = puntuacion.value
-            Log.d("Data", ControladorPreference.obtenerRecord(getApplication()).toString())
+            Log.d("DataMia", "NUEVA"+ControladorPreference.obtenerRecord(getApplication()).toString())
         }
 
         puntuacion.value = 0

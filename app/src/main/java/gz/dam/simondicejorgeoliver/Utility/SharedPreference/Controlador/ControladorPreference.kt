@@ -20,10 +20,9 @@ object ControladorPreference : InterfazRecord{
     override fun obtenerRecord(context: Context): Record {
         val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val rec = sharedPreferences.getInt(KEYRECORD,0)
-        val dat = sharedPreferences.getString(KEYDATE,"")
-        val dataAjusta = Date(dat)
+        val dat = sharedPreferences.getString(KEYDATE,"Wed Dec 03 13:27:11 GMT+01:00 2025")
         Record.valorRecord = rec
-        Record.fechaSuperacion = dataAjusta
+        Record.fechaSuperacion = Date(dat)
         return Record
     }
 
