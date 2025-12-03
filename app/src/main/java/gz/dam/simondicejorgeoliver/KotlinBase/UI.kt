@@ -176,8 +176,10 @@ fun reproducirTono(frecuencia: Double, duracionMs: Int) {
     audioTrack.release()
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun UIPreview() {
     UI(viewModel = MyViewModel)
 }
+*/

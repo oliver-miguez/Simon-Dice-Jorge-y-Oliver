@@ -1,14 +1,17 @@
 package gz.dam.simondicejorgeoliver.KotlinBase
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import gz.dam.simondicejorgeoliver.Utility.KotlinRecord.Controlador.ControladorKotlin
+import gz.dam.simondicejorgeoliver.Utility.SharedPreference.Controlador.ControladorPreference
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-object MyViewModel: ViewModel(){
+class MyViewModel(application: Application): AndroidViewModel(application){
     val estadoActual: MutableStateFlow<Estados> = MutableStateFlow(Estados.INICIO)
     var numeroRandomGenerado = MutableStateFlow(0)
 
@@ -21,6 +24,11 @@ object MyViewModel: ViewModel(){
 
 
     var posicion = 0
+
+
+    init {
+        record.value = obtenerRecord() // Muestra el valor del record constantemente actualizado en la app
+    }
 
     fun numeroRandom(){
         estadoActual.value = Estados.GENERANDO
@@ -79,11 +87,10 @@ object MyViewModel: ViewModel(){
     }
 
     fun derrota(){
-        record.value = ControladorKotlin.obtenerRecord().valorRecord
 
-        if (record.value < puntuacion.value){
+        if (puntuacion.value > obtenerRecord()){
+            ControladorPreference.actualizarRecord(getApplication(),puntuacion.value)
             record.value = puntuacion.value
-            ControladorKotlin.actualizarRecord(record.value)
         }
 
         puntuacion.value = 0
@@ -93,4 +100,10 @@ object MyViewModel: ViewModel(){
         Datos.numero = ArrayList()
 
     }
+
+    fun obtenerRecord():Int{
+        record.value = ControladorPreference.obtenerRecrod(getApplication())
+        return record.value
+    }
+
 }

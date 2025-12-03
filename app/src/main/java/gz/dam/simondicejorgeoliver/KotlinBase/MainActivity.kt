@@ -14,8 +14,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val viewModel = MyViewModel(application)
         setContent {
-            UI(MyViewModel)
+            UI(viewModel)
         }
     }
 }
