@@ -5,9 +5,6 @@ import androidx.compose.ui.graphics.Color
 object Datos {
     var numero: ArrayList<Int> = ArrayList()
 
-
-
-
 }
 
 enum class Colores(val color: Color, val txt: String, val nota: Double) {
