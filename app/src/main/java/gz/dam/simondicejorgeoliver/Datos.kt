@@ -22,3 +22,4 @@ enum class Estados(val start_activo: Boolean, val boton_activo: Boolean) {
     MOSTRANDO_SECUENCIA(start_activo = false,boton_activo = false),
     ADIVINANDO(start_activo = false, boton_activo = true),
 }
+
