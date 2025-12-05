@@ -7,6 +7,7 @@ object Datos {
 
 
 
+
 }
 
 enum class Colores(val color: Color, val txt: String, val nota: Double) {
