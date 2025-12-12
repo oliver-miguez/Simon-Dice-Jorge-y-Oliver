@@ -51,8 +51,7 @@ object FeedReaderContract {
         // Constantes de la base de datos
         // companion: Permite acceder a los miembros de la clase sin necesidad de crear una instancia.
         companion object {
-            // CAMBIO: Incrementamos la versión para aplicar los cambios de estructura
-            const val DATABASE_VERSION = 2 
+            const val DATABASE_VERSION = 2
             const val DATABASE_NAME = "FeedReader.db"
         }
     }

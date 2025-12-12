@@ -82,4 +82,29 @@ class ControladorSQLiteTest {
         // El último elemento debería ser el de puntuación 10 (el más antiguo)
         assertTrue("El último elemento debería ser el más antiguo (10)", lista[2].startsWith("10 -"))
     }
+
+    @Test
+    fun actualizarUltimoRecord_modificaCorrectamente() {
+        // Arrange: Guardamos dos registros
+        val fechaAntigua = System.currentTimeMillis() - 50000
+        val fechaReciente = System.currentTimeMillis()
+
+        controlador.guardarRecord(50, fechaAntigua)
+        controlador.guardarRecord(80, fechaReciente) // Este es el último
+
+        // Act: Actualizamos la puntuación del último registro (de 80 a 999)
+        controlador.actualizarUltimoRecord(999)
+
+        // Assert: Recuperamos los datos
+        val lista = controlador.obtenerDatos()
+
+        // El primer elemento de la lista (el más reciente) debería tener la nueva puntuación
+        // Formato esperado: "999 - fechaRecienteString"
+        assertTrue("El último registro no se actualizó correctamente. Valor encontrado: ${lista[0]}",
+            lista[0].startsWith("999 -"))
+
+        // El segundo elemento (el antiguo) no debería haber cambiado
+        assertTrue("El registro antiguo no debería haber cambiado",
+            lista[1].startsWith("50 -"))
+    }
 }
