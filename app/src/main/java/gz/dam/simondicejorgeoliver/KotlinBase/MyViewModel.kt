@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import gz.dam.simondicejorgeoliver.Utility.SharedPreference.Controlador.ControladorPreference
+import gz.dam.simondicejorgeoliver.Utility.SQLite.Controlador.ControladorSQLite // Importar tu controlador SQLite
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -25,10 +26,16 @@ class MyViewModel(application: Application): AndroidViewModel(application){
     var posicion = 0
 
     var data = Date()
+    
+    // Instancia del controlador de SQLite
+    private val controladorSQLite = ControladorSQLite(application)
 
     init {
-        //ControladorPreference.actualizarRecord(getApplication(),2,Date() )
-        record.value = obtenerRecord() // Muestra el valor del record constantemente actualizado en la app
+        // Inicializamos el record visual con lo que haya en Preferences (si quieres mantener la compatibilidad visual actual)
+        record.value = obtenerRecord() 
+        
+        // OPCIONAL: Leer todo el historial al iniciar para ver en Logcat qué hay guardado
+        controladorSQLite.obtenerDatos()
     }
 
     fun numeroRandom(){
@@ -88,6 +95,14 @@ class MyViewModel(application: Application): AndroidViewModel(application){
     }
 
     fun derrota(){
+        // Guardamos la partida en SQLite (Historial completo)
+        Log.d("ViewModel", "Guardando partida en SQLite...")
+        controladorSQLite.guardarRecord(puntuacion.value, System.currentTimeMillis())
+        
+        //  Probar a leer todo para ver que se guardó (saldrá en Logcat)
+        controladorSQLite.obtenerDatos()
+
+        // Lógica original de SharedPreferences para el "Récord Máximo" de la UI
         if (puntuacion.value > obtenerRecord()){
             Log.d("DataMia", "Hola $data")
             ControladorPreference.actualizarRecord(getApplication(),puntuacion.value,data)
@@ -100,12 +115,16 @@ class MyViewModel(application: Application): AndroidViewModel(application){
         ronda.value = 1
         estadoActual.value = Estados.INICIO
         Datos.numero = ArrayList()
-
+    }
+    
+    // Método para limpiar recursos cuando el ViewModel muera
+    override fun onCleared() {
+        super.onCleared()
+        controladorSQLite.cerrar()
     }
 
     fun obtenerRecord():Int{
         record.value = ControladorPreference.obtenerRecord(getApplication()).valorRecord
         return record.value
     }
-
 }
