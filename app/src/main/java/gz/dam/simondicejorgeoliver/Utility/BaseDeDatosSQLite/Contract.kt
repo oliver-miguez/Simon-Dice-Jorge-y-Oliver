@@ -16,14 +16,14 @@ object FeedReaderContract {
         const val COLUMN_NAME_DATE = "date"
     }
 
-    // "Script" que se lanza para crear las tablas, centrandonos principalmente en los valores que creamos antes
-    // Ademas utiliza _Id que proviene de BaseColumns
+    // "Script" que se lanza para crear las tablas.
+    // Se usa INTEGER para la fecha (timestamp) en lugar de DATE.
     private const val SQL_CREATE_ENTRIES =
         "CREATE TABLE ${FeedEntry.TABLE_NAME} (" +
                 "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                 "${FeedEntry.COLUMN_NAME_TITLE} TEXT," +
-                "${FeedEntry.COLUMN_NAME_SCORE} INTEGER,"+
-                "${FeedEntry.COLUMN_NAME_DATE} DATE)"
+                "${FeedEntry.COLUMN_NAME_SCORE} INTEGER," +
+                "${FeedEntry.COLUMN_NAME_DATE} INTEGER)" // Guardaremos la fecha como milisegundos (Long)
 
 
     // Reinicia la base de datos
@@ -31,30 +31,29 @@ object FeedReaderContract {
 
     /**
      * Clase interna que crea la base de datos y la estructura de la tabla
-     * @param context Es necesario para poder crear la base de datos(APPLICATION)
-     * @constructor Crea la base de datos
-     *
      */
     class FeedReaderDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-        // Crea la base de datos
+        
         override fun onCreate(db: SQLiteDatabase) {
             db.execSQL(SQL_CREATE_ENTRIES)
         }
-        // Actualiza la base de datos(en este caso la reinicia)
+        
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+            // Esta política de actualización es simple: descarta los datos y vuelve a empezar.
             db.execSQL(SQL_DELETE_ENTRIES)
             onCreate(db)
         }
-        // Recoge una versión antigua con datos anteriores de bases de datos anteriores
+        
         override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
             onUpgrade(db, oldVersion, newVersion)
         }
 
         // Constantes de la base de datos
-        // Companion: sirve como un objeto statico dentro de una clase object
+        // companion: Permite acceder a los miembros de la clase sin necesidad de crear una instancia.
         companion object {
-            const val DATABASE_VERSION = 1 // Version de la base de datos
-            const val DATABASE_NAME = "FeedReader.db" // Nombre de la base de datos
+            // CAMBIO: Incrementamos la versión para aplicar los cambios de estructura
+            const val DATABASE_VERSION = 2 
+            const val DATABASE_NAME = "FeedReader.db"
         }
     }
 }
