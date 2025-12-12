@@ -31,6 +31,7 @@ object FeedReaderContract {
 
     /**
      * Clase interna que crea la base de datos y la estructura de la tabla
+     * @param context El contexto de la aplicación
      */
     class FeedReaderDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
         
