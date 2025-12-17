@@ -3,7 +3,9 @@ package gz.dam.simondicejorgeoliver.KotlinBase
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.application
 import androidx.lifecycle.viewModelScope
+import gz.dam.simondicejorgeoliver.Utility.Rooms.ControladorRooms
 import gz.dam.simondicejorgeoliver.Utility.SharedPreference.Controlador.ControladorPreference
 import gz.dam.simondicejorgeoliver.Utility.SQLite.Controlador.ControladorSQLite // Importar tu controlador SQLite
 import kotlinx.coroutines.delay
@@ -28,14 +30,15 @@ class MyViewModel(application: Application): AndroidViewModel(application){
     var data = Date()
     
     // Instancia del controlador de SQLite
-    private val controladorSQLite = ControladorSQLite(application)
+    private val controladorSQLite = ControladorRooms(application)
+
 
     init {
         // Inicializamos el record visual con lo que haya en Preferences (si quieres mantener la compatibilidad visual actual)
         record.value = obtenerRecord() 
         
         // OPCIONAL: Leer todo el historial al iniciar para ver en Logcat qué hay guardado
-        controladorSQLite.obtenerDatos()
+        //controladorSQLite.obtenerDatos()
     }
 
     fun numeroRandom(){
@@ -97,15 +100,15 @@ class MyViewModel(application: Application): AndroidViewModel(application){
     fun derrota(){
         // Guardamos la partida en SQLite (Historial completo)
         Log.d("ViewModel", "Guardando partida en SQLite...")
-        controladorSQLite.guardarRecord(puntuacion.value, System.currentTimeMillis())
+        controladorSQLite.actualizarRecord(application,puntuacion.value, data)
         
         //  Probar a leer todo para ver que se guardó (saldrá en Logcat)
-        controladorSQLite.obtenerDatos()
+        controladorSQLite.obtenerRecord(application)
 
         // Lógica original de SharedPreferences para el "Récord Máximo" de la UI
         if (puntuacion.value > obtenerRecord()){
             Log.d("DataMia", "Hola $data")
-            ControladorPreference.actualizarRecord(getApplication(),puntuacion.value,data)
+            ControladorPreference.actualizarRecord(getApplication(),puntuacion.value, Date())
             record.value = puntuacion.value
             Log.d("DataMia", "NUEVA"+ControladorPreference.obtenerRecord(getApplication()).toString())
         }
