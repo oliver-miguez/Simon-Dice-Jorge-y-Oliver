@@ -16,7 +16,7 @@ class ControladorRooms(private val applicationContext: Context): InterfazRecord 
     val db = Room.databaseBuilder(
         applicationContext,
         AppDatabase::class.java, "database-name"
-    ).allowMainThreadQueries()
+    ).allowMainThreadQueries() // Permite que se ejecute en el hilo principal
         .build()
     // Permite acceder a los métodos del DAO
     val userDao = db.userDao()
