@@ -4,6 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * s un "molde" que le dice a la base de datos cómo es un registro.
+ * Define la tabla (llamada user) y sus columnas (uid, record, fecha).
+ */
 @Entity
 data class User(
     @PrimaryKey(autoGenerate = true) val uid: Int?,

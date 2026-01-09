@@ -6,17 +6,20 @@ import gz.dam.simondicejorgeoliver.Interfaz.InterfazRecord
 import gz.dam.simondicejorgeoliver.Utility.Instancia.Record
 import java.util.Date
 
+/**
+ * Es la clase que usas en tu app para hablar con la base de datos.
+ * ◦Crea y configura la base de datos.
+ * ◦Usa el UserDao para ejecutar las acciones (leer, guardar, etc.).
+ */
 class ControladorRooms(private val applicationContext: Context): InterfazRecord {
-
+    // Esto sirve para crear la base de datos
     val db = Room.databaseBuilder(
         applicationContext,
         AppDatabase::class.java, "database-name"
     ).allowMainThreadQueries()
         .build()
+    // Permite acceder a los métodos del DAO
     val userDao = db.userDao()
-
-        // Permite obtener todos los usuarios de la base de datos
-        //val users: List<User> = userDao.getAll() // SELECT * FROM user
 
     override fun obtenerRecord(context: Context): Record {
         // Busca usuarios por el record

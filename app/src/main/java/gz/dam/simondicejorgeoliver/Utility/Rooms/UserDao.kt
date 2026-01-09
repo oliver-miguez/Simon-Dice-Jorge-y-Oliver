@@ -6,6 +6,13 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 
+/**
+ * Es la lista de cosas que puedes hacer con la base de datos:
+ * getAll(): Coger todos los usuarios.
+ * findByRecord(): Coger el usuario con el récord más alto.
+ * insertAll(): Añadir nuevos usuarios.
+ * update(): Modificar un usuario.
+ */
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user")
