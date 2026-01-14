@@ -19,3 +19,4 @@ Eres un ingeniero de software sénior con amplia experiencia en proyectos de có
 6. Utiliza los logos de la carpeta 'assets'.
 7. Añade la autoría: 'Oliver Miguez Alonso'
 8. Usa sempre o idioma "Galego" o "Español" para facer o Readme including specific requirements, constraints, and success criteria.
+9. Mencionaras lo que hace cada carpeta separando por apartados una de otra para más orden

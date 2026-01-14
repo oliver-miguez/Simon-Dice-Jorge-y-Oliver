@@ -1,0 +1,8 @@
+- Los commits serán en gallego o castellano da igual pero uno de esos dos.
+- Por cada commit que sean breves y expliquen perfectamente lo que hace o que se soluciona.
+- Tendrán una descripcion precisa.
+- Intentarás enumaralos de alguna manera para verlos ordenados.
+- Añade una descipcion más extensa
+- Antes de la descripción añade un nombre o palabras breves que resuman los cambios
+- Que las descripciones de los commits sean grandes y expliquen detalladamente
+- Numera con numeros en la descripcion cada cosa nueva implementada o cada vez que describas una accion diferente
