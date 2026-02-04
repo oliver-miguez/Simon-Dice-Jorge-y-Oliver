@@ -14,6 +14,9 @@ object ControladorPreference : InterfazRecord{
     private const val KEYRECORD = "record"
     private const val KEYDATE = "date"
 
+    private const val KEYNOMBRE = "nombre"
+
+
     /**
      * Permite recoger el record y la data
      */
@@ -30,12 +33,13 @@ object ControladorPreference : InterfazRecord{
     /**
      * Permite actualizar el record si se supera
      */
-    override fun actualizarRecord(context: Context, nuevoRecord: Int, dataActual: Date): Int {
+    override fun actualizarRecord(context: Context, nuevoRecord: Int, dataActual: Date, nombre: String): Int {
         val sharedPreferences  = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val dataString = dataActual.toString()
         sharedPreferences.edit{
             putInt(KEYRECORD,nuevoRecord)
             putString(KEYDATE,dataString)
+            putString(KEYNOMBRE,nombre)
         }
         return 1
     }

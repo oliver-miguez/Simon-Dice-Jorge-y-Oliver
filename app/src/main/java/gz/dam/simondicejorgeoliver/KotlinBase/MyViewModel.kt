@@ -111,7 +111,7 @@ class MyViewModel(application: Application): AndroidViewModel(application){
         // Lógica original de SharedPreferences para el "Récord Máximo" de la UI
         if (puntuacion.value > obtenerRecord()){
             Log.d("DataMia", "Hola $data")
-            ControladorPreference.actualizarRecord(getApplication(),puntuacion.value, Date())
+            ControladorPreference.actualizarRecord(getApplication(),puntuacion.value, Date(),nombre.value)
             record.value = puntuacion.value
             Log.d("DataMia", "NUEVA"+ControladorPreference.obtenerRecord(getApplication()).toString())
         }
