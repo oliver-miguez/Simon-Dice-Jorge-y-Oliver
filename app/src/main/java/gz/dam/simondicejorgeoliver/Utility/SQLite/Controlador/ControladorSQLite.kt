@@ -33,6 +33,8 @@ class ControladorSQLite(context: Context) {
         Log.d("SQLite", "INSERT: Record guardado correctamente. ID fila: $newRowId. Score: $puntuacion")
     }
 
+
+
     /**
      * Permite obtener el record maximo para actualizar en el ViewModel
      */
@@ -156,4 +158,5 @@ class ControladorSQLite(context: Context) {
     fun cerrar() {
         dbHelper.close()
     }
+
 }

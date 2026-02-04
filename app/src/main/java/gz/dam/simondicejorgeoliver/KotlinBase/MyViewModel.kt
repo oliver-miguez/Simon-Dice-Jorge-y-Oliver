@@ -99,29 +99,38 @@ class MyViewModel(application: Application): AndroidViewModel(application){
         numeroRandom()
     }
 
-    fun derrota(){
+    fun derrota() {
         // Guardamos la partida en SQLite (Historial completo)
         Log.d("ViewModel", "Guardando partida en SQLite...")
-        controladorSQLite.guardarRecord(puntuacion.value, data.time)
-        // Muestra los datos(Debug)
-        controladorSQLite.obtenerDatos()
+        controladorSQLite.guardarRecord(
+            puntuacion.value,
+            data.time
+        ) // Guarda el record en la base de datos
 
-        // Reiniciar valores
-        puntuacion.value = 0
-        posicion=0
-        ronda.value = 1
-        estadoActual.value = Estados.INICIO
-        Datos.numero = ArrayList()
-    }
-    
-    // Método para limpiar recursos cuando el ViewModel muera
-    override fun onCleared() {
-        super.onCleared()
-        controladorSQLite.cerrar()
+        // Comprueba el valor del record y actualiza en caso de ser necesario en base a SQLite
+        if(puntuacion.value == record.value){
+            Log.d("ViewModel", "Actualizando record en SQLite...")
+            controladorSQLite.actualizarUltimoRecord(
+                puntuacion.value
+            )
+
+            // Reiniciar valores
+            puntuacion.value = 0
+            posicion = 0
+            ronda.value = 1
+            estadoActual.value = Estados.INICIO
+            Datos.numero = ArrayList()
+        }
     }
 
-    fun obtenerRecord():Int{
-        record.value = ControladorPreference.obtenerRecord(getApplication()).valorRecord
-        return record.value
-    }
+        // Método para limpiar recursos cuando el ViewModel muera
+        override fun onCleared() {
+            super.onCleared()
+            controladorSQLite.cerrar()
+        }
+
+        fun obtenerRecord(): Int {
+            record.value = controladorSQLite.obtenerRecord()
+            return record.value
+        }
 }
