@@ -36,11 +36,32 @@ class ControladorSQLite(context: Context) {
     /**
      * Permite obtener el record maximo para actualizar en el ViewModel
      */
-    fun obtenerRecord(){
+    fun obtenerRecord(): Int{
         val db = dbHelper.readableDatabase // Abrir la base de datos en modo lectura
         val projection = arrayOf(
             FeedReaderContract.FeedEntry.COLUMN_NAME_SCORE
         )
+        db.query(
+            FeedReaderContract.FeedEntry.TABLE_NAME,
+            projection,
+            null,
+            null,
+            null,
+            null,
+            null
+        ).use { cursor ->
+            // Recorrer los resultados
+            while (cursor.moveToNext()) {
+                // Obtener los valores de las columnas
+                val score = cursor.getInt(cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_SCORE))
+
+                Log.d("SQLite", "READ: Record encontrado -> Score=$score")
+                return score
+            }
+
+        }
+        Log.d("SQLite", "READ: No se encontró ningún record.")
+        return 0
 
 
     }
