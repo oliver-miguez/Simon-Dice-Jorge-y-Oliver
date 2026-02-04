@@ -2,6 +2,7 @@ package gz.dam.simondicejorgeoliver.KotlinBase
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.material3.contentColorFor
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.application
 import androidx.lifecycle.viewModelScope
@@ -13,7 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.util.Date
 
-class MyViewModel(application: Application): AndroidViewModel(application){
+class MyViewModel(application: Application): AndroidViewModel(application) {
     val estadoActual: MutableStateFlow<Estados> = MutableStateFlow(Estados.INICIO)
     var numeroRandomGenerado = MutableStateFlow(0)
 
@@ -28,41 +29,41 @@ class MyViewModel(application: Application): AndroidViewModel(application){
     var posicion = 0
 
     var data = Date()
-    
+
     // Instancia del controlador de SQLite Room
     //private val controladorSQLite = ControladorRooms(application)
 
-    private  val controladorSQLite = ControladorSQLite(application)
+    private val controladorSQLite = ControladorSQLite(application)
 
 
     init {
         // Inicializamos el record visual con lo que haya en Preferences (si quieres mantener la compatibilidad visual actual)
-        record.value = obtenerRecord() 
-        
+        record.value = controladorSQLite.obtenerRecord()
+
         // OPCIONAL: Leer todo el historial al iniciar para ver en Logcat qué hay guardado
         //controladorSQLite.obtenerDatos()
     }
 
-    fun numeroRandom(){
+    fun numeroRandom() {
         estadoActual.value = Estados.GENERANDO
-        Log.d("ViewModel","Estado Generando")
+        Log.d("ViewModel", "Estado Generando")
         numeroRandomGenerado.value = (0..3).random()
-        Log.d("ViewModel","Número aleatorio generado: $numeroRandomGenerado")
+        Log.d("ViewModel", "Número aleatorio generado: $numeroRandomGenerado")
         actualizarNumero(numeroRandomGenerado.value)
     }
 
-    fun actualizarNumero(numero:Int){
-        Log.d("ViewModel","Actualizando el numero de la clase Datos")
+    fun actualizarNumero(numero: Int) {
+        Log.d("ViewModel", "Actualizando el numero de la clase Datos")
         Datos.numero.add(numero)
         estadoActual.value = Estados.ADIVINANDO
         mostrarSecuencia(Datos.numero)
 
     }
 
-    fun correcionOpcionElegida(numeroColor:Int): Boolean{
-        Log.d("ViewModel","Combrobando si la opción escogida es correcta...")
-        return if (numeroColor == Datos.numero[posicion]){
-            Log.d("ViewModel","ES CORRECTO !")
+    fun correcionOpcionElegida(numeroColor: Int): Boolean {
+        Log.d("ViewModel", "Combrobando si la opción escogida es correcta...")
+        return if (numeroColor == Datos.numero[posicion]) {
+            Log.d("ViewModel", "ES CORRECTO !")
             posicion++
             if (Datos.numero.size == posicion) {
                 cambiarRonda()
@@ -70,30 +71,30 @@ class MyViewModel(application: Application): AndroidViewModel(application){
             puntuacion.value = puntuacion.value.plus(1)
 
             true
-        }else{
-            Log.d("ViewModel","ERROR, HAS PERDIDO")
+        } else {
+            Log.d("ViewModel", "ERROR, HAS PERDIDO")
             derrota()
             false
         }
     }
 
-    fun mostrarSecuencia(secuencia: ArrayList<Int>){
-        Log.d("ViewModel","Estado Adivinando, secuencia: $secuencia")
+    fun mostrarSecuencia(secuencia: ArrayList<Int>) {
+        Log.d("ViewModel", "Estado Adivinando, secuencia: $secuencia")
         viewModelScope.launch {
-            for (boton in secuencia){
-                botonPresionado.value=boton
+            for (boton in secuencia) {
+                botonPresionado.value = boton
                 delay(800)
             }
         }
     }
 
-    fun continuarSecuencia(){
-        botonPresionado.value=-1
+    fun continuarSecuencia() {
+        botonPresionado.value = -1
 
     }
 
-    fun cambiarRonda(){
-        posicion=0
+    fun cambiarRonda() {
+        posicion = 0
         ronda.value = ronda.value?.plus(1)
 
         numeroRandom()
@@ -106,31 +107,36 @@ class MyViewModel(application: Application): AndroidViewModel(application){
             puntuacion.value,
             data.time
         ) // Guarda el record en la base de datos
+        Log.d("ViewModel", "Partida guardada en SQLite.")
 
         // Comprueba el valor del record y actualiza en caso de ser necesario en base a SQLite
-        if(puntuacion.value == record.value){
+        if (puntuacion.value > record.value) {
             Log.d("ViewModel", "Actualizando record en SQLite...")
-            controladorSQLite.actualizarUltimoRecord(
-                puntuacion.value
-            )
-
-            // Reiniciar valores
-            puntuacion.value = 0
-            posicion = 0
-            ronda.value = 1
-            estadoActual.value = Estados.INICIO
-            Datos.numero = ArrayList()
+            controladorSQLite.actualizarUltimoRecord2(puntuacion.value)
+           //controladorSQLite.actualizarUltimoRecord(puntuacion.value)
+            Log.d("ViewModel", "Record actualizado en SQLite.")
         }
+
+
+        // Reiniciar valores
+        puntuacion.value = 0
+        posicion = 0
+        ronda.value = 1
+        estadoActual.value = Estados.INICIO
+        Datos.numero = ArrayList()
     }
 
-        // Método para limpiar recursos cuando el ViewModel muera
-        override fun onCleared() {
-            super.onCleared()
-            controladorSQLite.cerrar()
-        }
 
-        fun obtenerRecord(): Int {
-            record.value = controladorSQLite.obtenerRecord()
-            return record.value
-        }
+    // Método para limpiar recursos cuando el ViewModel muera
+    override fun onCleared() {
+        super.onCleared()
+        controladorSQLite.cerrar()
+    }
+
+    fun obtenerRecord(): Int {
+        record.value = controladorSQLite.obtenerRecord()
+        return record.value
+    }
+
+
 }

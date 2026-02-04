@@ -153,6 +153,41 @@ class ControladorSQLite(context: Context) {
             Log.d("SQLite", "UPDATE: No se encontró ningún registro para actualizar.")
         }
     }
+
+    fun actualizarUltimoRecord2(nuevaPuntuacion: Int) {
+        val db = dbHelper.writableDatabase // Accede a la base en formato escritura
+        val values = ContentValues().apply {
+            put(FeedReaderContract.FeedEntry.COLUMN_NAME_SCORE, nuevaPuntuacion)
+        }
+
+        var recordMaximo: Long? = null
+        val queryMax = "SELECT MAX(${FeedReaderContract.FeedEntry.COLUMN_NAME_SCORE}) FROM ${FeedReaderContract.FeedEntry.TABLE_NAME}"
+        db.rawQuery(queryMax, null).use { cursor ->
+            if (cursor.moveToFirst()) {
+                recordMaximo = cursor.getLong(0)
+            }
+
+        }
+        if (recordMaximo != null) {
+            val selection = "${FeedReaderContract.FeedEntry.COLUMN_NAME_SCORE} = ?"
+            val selectionArgs = arrayOf(recordMaximo.toString())
+
+            val count = db.update(
+                FeedReaderContract.FeedEntry.TABLE_NAME,
+                values,
+                selection,
+                selectionArgs
+            )
+            Log.d("SQLite", "UPDATE: Se actualizó el último registro (Score: $recordMaximo). Filas afectadas: $count. Nuevo Score: $nuevaPuntuacion")
+        } else {
+            Log.d("SQLite", "UPDATE: No se encontró ningún registro para actualizar.")
+
+        }
+
+
+
+    }
+
     
     // Método auxiliar para cerrar la base de datos
     fun cerrar() {
