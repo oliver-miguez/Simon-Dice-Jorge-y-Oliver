@@ -8,4 +8,6 @@ import java.util.Date
 object Record {
     var valorRecord:Int = 0
     var fechaSuperacion: Date = Date()
+
+    var nombre: String =""
 }

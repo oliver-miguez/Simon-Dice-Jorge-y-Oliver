@@ -30,6 +30,7 @@ class ControladorRooms(private val applicationContext: Context): InterfazRecord 
         if (userByRecord?.record != null){
             record.valorRecord = userByRecord.record!!
             record.fechaSuperacion = Date(userByRecord.fecha)
+            record.nombre = userByRecord.nombre
         }
 
         return record
@@ -38,11 +39,12 @@ class ControladorRooms(private val applicationContext: Context): InterfazRecord 
     override fun actualizarRecord(
         context: Context,
         valorRecord: Int,
-        valorData: Date
+        valorData: Date,
+        nombre: String
     ): Int {
         try {
             // Añade usuarios a la base
-            val newUser = User(null, valorRecord, valorData.toString()) // INSERT INTO user (uid, record) VALUES (1, 12)
+            val newUser = User(null, valorRecord, valorData.toString(), nombre) // INSERT INTO user (uid, record) VALUES (1, 12)
             userDao.insertAll(newUser)
 
             // Permite actualizar un usuario

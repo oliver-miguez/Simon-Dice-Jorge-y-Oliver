@@ -14,5 +14,5 @@ interface InterfazRecord{
     
 
     // Actualiza el record
-    fun actualizarRecord(context: Context,valorRecord: Int,valorData: Date): Int
+    fun actualizarRecord(context: Context,valorRecord: Int,valorData: Date, nombre: String): Int
 }

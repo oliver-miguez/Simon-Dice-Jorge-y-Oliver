@@ -12,6 +12,7 @@ import androidx.room.PrimaryKey
 data class User(
     @PrimaryKey(autoGenerate = true) val uid: Int?,
     @ColumnInfo(name = "record") var record: Int?,
-    @ColumnInfo(name = "fecha") var fecha: String?
+    @ColumnInfo(name = "fecha") var fecha: String?,
+    @ColumnInfo(name = "nombre") var nombre:String
 )
 
