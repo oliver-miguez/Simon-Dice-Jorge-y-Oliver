@@ -14,6 +14,7 @@ class ControladorSQLite(context: Context) {
     // solo cuando se necesite, o usar 'lazy' si queremos mantenerla.
     private val dbHelper = FeedReaderContract.FeedReaderDbHelper(context)
 
+
     /**
      * Guarda un nuevo record en la base de datos (INSERT)
      * @param puntuacion La puntuación obtenida
@@ -30,6 +31,18 @@ class ControladorSQLite(context: Context) {
         // Insertar el nuevo registro
         val newRowId = db.insert(FeedReaderContract.FeedEntry.TABLE_NAME, null, values)
         Log.d("SQLite", "INSERT: Record guardado correctamente. ID fila: $newRowId. Score: $puntuacion")
+    }
+
+    /**
+     * Permite obtener el record maximo para actualizar en el ViewModel
+     */
+    fun obtenerRecord(){
+        val db = dbHelper.readableDatabase // Abrir la base de datos en modo lectura
+        val projection = arrayOf(
+            FeedReaderContract.FeedEntry.COLUMN_NAME_SCORE
+        )
+
+
     }
 
     /**

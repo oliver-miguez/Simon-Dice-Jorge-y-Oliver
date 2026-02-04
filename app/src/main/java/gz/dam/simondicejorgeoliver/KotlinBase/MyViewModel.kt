@@ -29,8 +29,10 @@ class MyViewModel(application: Application): AndroidViewModel(application){
 
     var data = Date()
     
-    // Instancia del controlador de SQLite
-    private val controladorSQLite = ControladorRooms(application)
+    // Instancia del controlador de SQLite Room
+    //private val controladorSQLite = ControladorRooms(application)
+
+    private  val controladorSQLite = ControladorSQLite(application)
 
 
     init {
@@ -100,19 +102,11 @@ class MyViewModel(application: Application): AndroidViewModel(application){
     fun derrota(){
         // Guardamos la partida en SQLite (Historial completo)
         Log.d("ViewModel", "Guardando partida en SQLite...")
-        controladorSQLite.actualizarRecord(application,puntuacion.value, data)
-        
-        //  Probar a leer todo para ver que se guardó (saldrá en Logcat)
-        controladorSQLite.obtenerRecord(application)
+        controladorSQLite.guardarRecord(puntuacion.value, data.time)
+        // Muestra los datos(Debug)
+        controladorSQLite.obtenerDatos()
 
-        // Lógica original de SharedPreferences para el "Récord Máximo" de la UI
-        if (puntuacion.value > obtenerRecord()){
-            Log.d("DataMia", "Hola $data")
-            ControladorPreference.actualizarRecord(getApplication(),puntuacion.value, Date())
-            record.value = puntuacion.value
-            Log.d("DataMia", "NUEVA"+ControladorPreference.obtenerRecord(getApplication()).toString())
-        }
-
+        // Reiniciar valores
         puntuacion.value = 0
         posicion=0
         ronda.value = 1
