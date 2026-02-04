@@ -28,15 +28,17 @@ class MyViewModel(application: Application): AndroidViewModel(application){
     var posicion = 0
 
     var data = Date()
-    
+
+    var nombre = MutableStateFlow<String>("")
+
     // Instancia del controlador de SQLite
     private val controladorSQLite = ControladorRooms(application)
 
 
     init {
         // Inicializamos el record visual con lo que haya en Preferences (si quieres mantener la compatibilidad visual actual)
-        record.value = obtenerRecord() 
-        
+        record.value = obtenerRecord()
+
         // OPCIONAL: Leer todo el historial al iniciar para ver en Logcat qué hay guardado
         //controladorSQLite.obtenerDatos()
     }
@@ -98,9 +100,10 @@ class MyViewModel(application: Application): AndroidViewModel(application){
     }
 
     fun derrota(){
+        nombre.value = "Derrotado"
         // Guardamos la partida en SQLite (Historial completo)
         Log.d("ViewModel", "Guardando partida en SQLite...")
-        controladorSQLite.actualizarRecord(application,puntuacion.value, data)
+        controladorSQLite.actualizarRecord(application,puntuacion.value, data,nombre.value)
         
         //  Probar a leer todo para ver que se guardó (saldrá en Logcat)
         controladorSQLite.obtenerRecord(application)
